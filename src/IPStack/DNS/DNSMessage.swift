@@ -246,7 +246,7 @@ open class DNSQuery {
 
         var type = DNSType(rawValue: scanner.read16()!)
         if type == nil {
-            type = .invalid
+            type = DNSType(rawValue: 0)
         }
 
         self.type = type
@@ -301,7 +301,7 @@ open class DNSResource {
         
         var type = DNSType(rawValue: scanner.read16()!)
         if type == nil {
-            type = .invalid
+            type = DNSType(rawValue: 0)
         }
         
         self.type = type
