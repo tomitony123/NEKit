@@ -244,7 +244,7 @@ open class DNSQuery {
         let scanner = BinaryDataScanner(data: payload, littleEndian: false)
         scanner.skip(to: offset + self.nameBytesLength)
 
-        let type = DNSType(rawValue: scanner.read16()!)
+        var type = DNSType(rawValue: scanner.read16()!)
         if type == nil {
             type = .invalid
         }
@@ -299,7 +299,7 @@ open class DNSResource {
         //     return nil
         // }
         
-        let type = DNSType(rawValue: scanner.read16()!)
+        var type = DNSType(rawValue: scanner.read16()!)
         if type == nil {
             type = .invalid
         }
