@@ -244,12 +244,11 @@ open class DNSQuery {
         let scanner = BinaryDataScanner(data: payload, littleEndian: false)
         scanner.skip(to: offset + self.nameBytesLength)
 
-        var type = DNSType(rawValue: scanner.read16()!)
-        if type == nil {
-            type = DNSType(rawValue: 0)
+        if let type = DNSType(rawValue: scanner.read16()!) {
+            self.type = type
+        } else {
+            self.type = DNSType(rawValue: 0)
         }
-
-        self.type = type
 
         guard let klass = DNSClass(rawValue: scanner.read16()!) else {
             DDLogError("Received DNS packet with unknown class.")
@@ -299,12 +298,11 @@ open class DNSResource {
         //     return nil
         // }
         
-        var type = DNSType(rawValue: scanner.read16()!)
-        if type == nil {
-            type = DNSType(rawValue: 0)
+        if let type = DNSType(rawValue: scanner.read16()!) {
+            self.type = type
+        } else {
+            self.type = DNSType(rawValue: 0)
         }
-        
-        self.type = type
 
         guard let klass = DNSClass(rawValue: scanner.read16()!) else {
             DDLogError("Received DNS packet with unknown class.")
