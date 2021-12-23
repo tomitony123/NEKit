@@ -77,6 +77,12 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
         RuleManager.currentManager.matchDNS(session, type: .domain)
 
+        guard session.matchResult != nil {
+            session.matchResult = .real
+            lookupRemotely(session)
+            return
+        }
+        
         switch session.matchResult! {
         case .fake:
             guard setUpFakeIP(session) else {
@@ -89,7 +95,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         case .real, .unknown:
             lookupRemotely(session)
         default:
-            DDLogError("The rule match result should never be .Pass.")
+            NSLog("(debugz)The rule match result should never be .Pass.")
         }
     }
 
@@ -174,7 +180,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             response.answers.append(DNSResource.ARecord(session.requestMessage.queries[0].name, TTL: UInt32(Opt.DNSFakeIPTTL), address: session.fakeIP!))
             session.expireAt = Date().addingTimeInterval(Double(Opt.DNSFakeIPTTL))
             guard response.buildMessage() else {
-                DDLogError("Failed to build DNS response.")
+                NSLog("(debugz)DNSServer outputSession Failed to build DNS response.")
                 return
             }
 
@@ -214,6 +220,8 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
      - parameter resolver: The resolver to add.
      */
     open func registerResolver(_ resolver: DNSResolverProtocol) {
+        DDLogDebug("(debugz)DNSServer new registerResolver")
+        
         resolver.delegate = self
         resolvers.append(resolver)
     }
@@ -221,7 +229,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
     fileprivate func setUpFakeIP(_ session: DNSSession) -> Bool {
 
         guard let fakeIP = pool?.fetchIP() else {
-            DDLogVerbose("Failed to get a fake IP.")
+            NSLog("(debugz)DNSServer, setUpFakeIP, Failed to get a fake IP.")
             return false
         }
         session.fakeIP = fakeIP
@@ -234,14 +242,14 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
     open func didReceive(rawResponse: Data) {
         guard let message = DNSMessage(payload: rawResponse) else {
-            DDLogError("Failed to parse response from remote DNS server.")
+            NSLog("(debugz)DNSServer, Failed to parse response from remote DNS server.")
             return
         }
 
         queue.async {
             guard let session = self.pendingSessions.removeValue(forKey: message.transactionID) else {
                 // this should not be a problem if there are multiple DNS servers or the DNS server is hijacked.
-                DDLogVerbose("Do not find the corresponding DNS session for the response.")
+                NSLog("DNSServer, Do not find the corresponding DNS session for the response.")
                 return
             }
 
@@ -263,7 +271,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             case .real:
                 self.outputSession(session)
             default:
-                DDLogError("The rule match result should never be .Pass or .Unknown in IP mode.")
+                NSLog("(debugz)DNSServer, The rule match result should never be .Pass or .Unknown in IP mode.")
             }
         }
     }

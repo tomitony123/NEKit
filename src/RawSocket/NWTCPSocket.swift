@@ -146,6 +146,7 @@ public class NWTCPSocket: NSObject, RawTCPSocketProtocol {
                 self.queueCall {
                     self.disconnect()
                 }
+                DDLogError("NWTCPSocket after disconnect when reading data: \(String(describing: error))")
                 return
             }
 
