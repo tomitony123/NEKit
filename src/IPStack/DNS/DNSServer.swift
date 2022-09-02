@@ -26,7 +26,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
     open var outputFunc: (([Data], [NSNumber]) -> Void)!
 
     // Only match A record as of now, all other records should be passed directly.
-    fileprivate let matchedType = [DNSType.a]
+    fileprivate let matchedType = [DNSType.a, DNSType.cname]
 
     /**
      Initailize a DNS server.
