@@ -77,7 +77,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
         RuleManager.currentManager.matchDNS(session, type: .domain)
 
-        guard session.matchResult != nil {
+        guard session.matchResult != nil else {
             session.matchResult = .real
             lookupRemotely(session)
             return
