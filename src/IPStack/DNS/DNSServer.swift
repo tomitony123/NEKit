@@ -130,10 +130,13 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 ////            return false
 //        }
 
-        guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
-            NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
-            return false
-        }
+        NSLog("(debugz)(NEKit.DNS)-input, peekProtocol:\(IPPacket.peekProtocol(packet))")
+        NSLog("(debugz)(NEKit.DNS)-input, serverAddress:\(IPPacket.peekDestinationAddress(packet))")
+        
+//        guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
+//            NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
+//            return false
+//        }
 
         guard IPPacket.peekDestinationPort(packet) == serverPort else {
             NSLog("(debugz)(NEKit.DNS)-input, dest not serverPort:\(serverPort), return")
