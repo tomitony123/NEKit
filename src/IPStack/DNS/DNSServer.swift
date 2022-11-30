@@ -125,10 +125,10 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         NSLog("(debugz)(NEKit.DNS)-input, packet:\(packet)")
         NSLog("(debugz)(NEKit.DNS)-input, packet data:\(packet)")
         
-        guard IPPacket.peekProtocol(packet) == .udp else {
-            NSLog("(debugz)(NEKit.DNS)-input, protocol not udp, return")
-//            return false
-        }
+//        guard IPPacket.peekProtocol(packet) == .udp else {
+//            NSLog("(debugz)(NEKit.DNS)-input, protocol not udp, return")
+////            return false
+//        }
 
         guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
             NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
