@@ -89,12 +89,15 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         case .fake:
             guard setUpFakeIP(session) else {
                 // failed to set up a fake IP, return the result directly
+                NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries), lookupRemotely(real)")
                 session.matchResult = .real
                 lookupRemotely(session)
                 return
             }
+            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries), lookupRemotely(fake)")
             outputSession(session)
         case .real, .unknown:
+            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries), lookupRemotely(real,unknown)")
             lookupRemotely(session)
         default:
             NSLog("(debugz)(NEKit.DNS)-lookup, The rule match result should never be .Pass.")
@@ -122,21 +125,21 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
      - returns: If the packet is taken in by this DNS server.
      */
     open func input(packet: Data, version: NSNumber?) -> Bool {
-        NSLog("(debugz)(NEKit.DNS)-input, packet:\(packet)")
-        NSLog("(debugz)(NEKit.DNS)-input, packet data:\(packet)")
+//        NSLog("(debugz)(NEKit.DNS)-input, packet:\(packet)")
+//        NSLog("(debugz)(NEKit.DNS)-input, packet data:\(packet)")
         
-//        guard IPPacket.peekProtocol(packet) == .udp else {
-//            NSLog("(debugz)(NEKit.DNS)-input, protocol not udp, return")
-////            return false
-//        }
+        guard IPPacket.peekProtocol(packet) == .udp else {
+            NSLog("(debugz)(NEKit.DNS)-input, protocol not udp, return")
+            return false
+        }
 
-        NSLog("(debugz)(NEKit.DNS)-input, peekProtocol:\(IPPacket.peekProtocol(packet))")
-        NSLog("(debugz)(NEKit.DNS)-input, serverAddress:\(IPPacket.peekDestinationAddress(packet))")
+//        NSLog("(debugz)(NEKit.DNS)-input, peekProtocol:\(IPPacket.peekProtocol(packet))")
+//        NSLog("(debugz)(NEKit.DNS)-input, serverAddress:\(IPPacket.peekDestinationAddress(packet))")
         
-//        guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
-//            NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
-//            return false
-//        }
+        guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
+            NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
+            return false
+        }
 
         guard IPPacket.peekDestinationPort(packet) == serverPort else {
             NSLog("(debugz)(NEKit.DNS)-input, dest not serverPort:\(serverPort), return")
