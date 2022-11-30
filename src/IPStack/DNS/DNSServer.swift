@@ -163,10 +163,12 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
     }
     
     public func start() {
-        
+        NSLog("(debugz)(NEKit.DNS)-start, start")
     }
 
     open func stop() {
+        NSLog("(debugz)(NEKit.DNS)-stop, stop")
+        
         for resolver in resolvers {
             resolver.stop()
         }
@@ -248,6 +250,9 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             NSLog("(debugz)DNSServer, setUpFakeIP, Failed to get a fake IP.")
             return false
         }
+        
+        NSLog("(debugz)(NEKit.DNS)-setUpFakeIP, domain:\(message.queries), fakeIP:\(fakeIP)")
+        
         session.fakeIP = fakeIP
         fakeSessions[fakeIP] = session
         session.expireAt = Date().addingTimeInterval(TimeInterval(Opt.DNSFakeIPTTL))
@@ -258,9 +263,11 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
     open func didReceive(rawResponse: Data) {
         guard let message = DNSMessage(payload: rawResponse) else {
-            NSLog("(debugz)DNSServer, Failed to parse response from remote DNS server.")
+            NSLog("(debugz)DNSServer, didReceive, Failed to parse response from remote DNS server.")
             return
         }
+        
+        NSLog("(debugz)(NEKit.DNS)-didReceive, domain:\(message.queries)")
 
         queue.async {
             guard let session = self.pendingSessions.removeValue(forKey: message.transactionID) else {
