@@ -70,6 +70,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
     fileprivate func lookup(_ session: DNSSession) {
         guard shouldMatch(session) else {
+            NSLog("(debugz)(NEKit.DNS)-lookup, shouldMatch false, lookupRemotely")
             session.matchResult = .real
             lookupRemotely(session)
             return
@@ -78,6 +79,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         RuleManager.currentManager.matchDNS(session, type: .domain)
 
         guard session.matchResult != nil else {
+            NSLog("(debugz)(NEKit.DNS)-lookup, session.matchResult is nil, lookupRemotely")
             session.matchResult = .real
             lookupRemotely(session)
             return
@@ -95,7 +97,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         case .real, .unknown:
             lookupRemotely(session)
         default:
-            NSLog("(debugz)The rule match result should never be .Pass.")
+            NSLog("(debugz)(NEKit.DNS)-lookup, The rule match result should never be .Pass.")
         }
     }
 
@@ -121,22 +123,27 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
      */
     open func input(packet: Data, version: NSNumber?) -> Bool {
         guard IPPacket.peekProtocol(packet) == .udp else {
+            NSLog("(debugz)(NEKit.DNS)-input, protocol not udp, return")
             return false
         }
 
         guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
+            NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
             return false
         }
 
         guard IPPacket.peekDestinationPort(packet) == serverPort else {
+            NSLog("(debugz)(NEKit.DNS)-input, dest not serverPort:\(serverPort), return")
             return false
         }
 
         guard let ipPacket = IPPacket(packetData: packet) else {
+            NSLog("(debugz)(NEKit.DNS)-input, IPPacket failed, return")
             return false
         }
 
         guard let session = DNSSession(packet: ipPacket) else {
+            NSLog("(debugz)(NEKit.DNS)-input, DNSSession failed, return")
             return false
         }
 
