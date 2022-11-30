@@ -94,7 +94,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
                 lookupRemotely(session)
                 return
             }
-            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries.first?.name), lookupRemotely(fake)")
+            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries.first?.name), outputSession(fake)")
             outputSession(session)
         case .real, .unknown:
             NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries.first?.name), lookupRemotely(real,unknown)")
@@ -179,6 +179,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
     fileprivate func outputSession(_ session: DNSSession) {
         guard let result = session.matchResult else {
+            NSLog("(debugz)DNSServer outputSession, invalid match result.")
             return
         }
 
@@ -189,6 +190,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         switch result {
         case .real:
             udpParser.payload = session.realResponseMessage!.payload
+            NSLog("(debugz)DNSServer outputSession, type: real, domain:\(session.requestMessage.queries[0].name)")
         case .fake:
             let response = DNSMessage()
             response.transactionID = session.requestMessage.transactionID
@@ -203,7 +205,10 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             }
 
             udpParser.payload = response.payload
+            
+            NSLog("(debugz)DNSServer outputSession, type: fake, answer(domain:\(session.requestMessage.queries[0].name), address:\(session.fakeIP)")
         default:
+            NSLog("(debugz)DNSServer outputSession, not support reault type: \(result)")
             return
         }
         let ipPacket = IPPacket()
