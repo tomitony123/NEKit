@@ -89,15 +89,15 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         case .fake:
             guard setUpFakeIP(session) else {
                 // failed to set up a fake IP, return the result directly
-                NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries), lookupRemotely(real)")
+                NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries.first?.name), lookupRemotely(real)")
                 session.matchResult = .real
                 lookupRemotely(session)
                 return
             }
-            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries), lookupRemotely(fake)")
+            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries.first?.name), lookupRemotely(fake)")
             outputSession(session)
         case .real, .unknown:
-            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries), lookupRemotely(real,unknown)")
+            NSLog("(debugz)(NEKit.DNS)-lookup, domain:\(session.requestMessage.queries.first?.name), lookupRemotely(real,unknown)")
             lookupRemotely(session)
         default:
             NSLog("(debugz)(NEKit.DNS)-lookup, The rule match result should never be .Pass.")
@@ -251,7 +251,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             return false
         }
         
-        NSLog("(debugz)(NEKit.DNS)-setUpFakeIP, domain:\(session.requestMessage.queries), fakeIP:\(fakeIP)")
+        NSLog("(debugz)(NEKit.DNS)-setUpFakeIP, domain:\(session.requestMessage.queries.first?.name), fakeIP:\(fakeIP)")
         
         session.fakeIP = fakeIP
         fakeSessions[fakeIP] = session
@@ -267,7 +267,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             return
         }
         
-        NSLog("(debugz)(NEKit.DNS)-didReceive, domain:\(message.queries)")
+        NSLog("(debugz)(NEKit.DNS)-didReceive, domain:\(message.queries.first?.name)")
 
         queue.async {
             guard let session = self.pendingSessions.removeValue(forKey: message.transactionID) else {
