@@ -125,17 +125,11 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
      - returns: If the packet is taken in by this DNS server.
      */
     open func input(packet: Data, version: NSNumber?) -> Bool {
-//        NSLog("(debugz)(NEKit.DNS)-input, packet:\(packet)")
-//        NSLog("(debugz)(NEKit.DNS)-input, packet data:\(packet)")
-        
         guard IPPacket.peekProtocol(packet) == .udp else {
-            NSLog("(debugz)(NEKit.DNS)-input, protocol not udp, return")
             return false
         }
 
-//        NSLog("(debugz)(NEKit.DNS)-input, peekProtocol:\(IPPacket.peekProtocol(packet))")
-//        NSLog("(debugz)(NEKit.DNS)-input, serverAddress:\(IPPacket.peekDestinationAddress(packet))")
-        
+ 
         guard IPPacket.peekDestinationAddress(packet) == serverAddress else {
             NSLog("(debugz)(NEKit.DNS)-input, dest not serverAddress:\(serverAddress), return")
             return false

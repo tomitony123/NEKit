@@ -74,8 +74,11 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
     
     // MARK: TSIPStackDelegate Implementation
     open func didAcceptTCPSocket(_ sock: TSTCPSocket) {
-        DDLogDebug("Accepted a new socket from IP stack.")
+//        DDLogDebug("(debugz)didAcceptTCPSocket, Accepted a new socket from IP stack.")
         let tunSocket = TUNTCPSocket(socket: sock)
+    
+        DDLogDebug("(debugz)didAcceptTCPSocket, Accepted a new socket from IP stack. sourceIPAddress:\(tunSocket.sourceIPAddress), destinationIPAddress:\(tunSocket.destinationIPAddress)")
+        
         let proxySocket = DirectProxySocket(socket: tunSocket)
         self.proxyServer!.didAcceptNewSocket(proxySocket)
     }
