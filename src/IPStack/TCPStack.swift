@@ -47,6 +47,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
         if let version = version {
             // we do not process IPv6 packets now
             if version.int32Value == AF_INET6 {
+                DDLogDebug("(debugz)TCPStack.input, not process IPv6 packets, return")
                 return false
             }
         }
@@ -54,6 +55,8 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
             TSIPStack.stack.received(packet: packet)
             return true
         }
+        
+        DDLogDebug("(debugz)TCPStack.input, packet not tcp, return")
         return false
     }
     
@@ -77,7 +80,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
 //        DDLogDebug("(debugz)didAcceptTCPSocket, Accepted a new socket from IP stack.")
         let tunSocket = TUNTCPSocket(socket: sock)
     
-        DDLogDebug("(debugz)didAcceptTCPSocket, Accepted a new socket from IP stack. sourceIPAddress:\(tunSocket.sourceIPAddress), destinationIPAddress:\(tunSocket.destinationIPAddress)")
+        DDLogDebug("(debugz)TCPStack.didAcceptTCPSocket, Accepted a new IP stack. sourceIPAddress:\(tunSocket.sourceIPAddress), destinationIPAddress:\(tunSocket.destinationIPAddress)")
         
         let proxySocket = DirectProxySocket(socket: tunSocket)
         self.proxyServer!.didAcceptNewSocket(proxySocket)
