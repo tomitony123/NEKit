@@ -45,7 +45,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
      */
     open func input(packet: Data, version: NSNumber?) -> Bool {
         
-        DDLogDebug("(debugz)TCPStack.input, data length:\(packet.length)")
+//        DDLogDebug("(debugz)TCPStack.input, data length:\(packet.length)")
         
         if let version = version {
             // we do not process IPv6 packets now
