@@ -18,7 +18,7 @@ public enum TunnelEvent: EventType {
                 return "[TunnelEvent] Tunnel(signal from socket) \(tunnel) received ready-for-forward signal from socket \(socket). Start forwarding data."
             }
         case let .proxySocketReadData(data, from: socket, on: tunnel):
-            return "[TunnelEvent] Tunnel \(tunnel) received \(data.count) bytes from proxy socket \(socket)."
+            return "[TunnelEvent] proxySocketReadData, Tunnel \(tunnel) received \(data.count) bytes from proxy socket \(socket)."
         case let .proxySocketWroteData(data, by: socket, on: tunnel):
             if let data = data {
                 return "[TunnelEvent] Proxy socket \(socket) sent \(data.count) bytes data from Tunnel \(tunnel)."
