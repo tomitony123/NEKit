@@ -37,14 +37,14 @@ open class RuleManager {
     func matchDNS(_ session: DNSSession, type: DNSSessionMatchType) {
         for (i, rule) in rules[session.indexToMatch..<rules.count].enumerated() {
             let result = rule.matchDNS(session, type: type)
-
-            observer?.signal(.dnsRuleMatched(session, rule: rule, type: type, result: result))
-
+            
             switch result {
             case .fake, .real, .unknown:
                 session.matchedRule = rule
                 session.matchResult = result
                 session.indexToMatch = i + session.indexToMatch // add the offset
+                
+                observer?.signal(.dnsRuleMatched(session, rule: rule, type: type, result: result))
                 return
             case .pass:
                 break
