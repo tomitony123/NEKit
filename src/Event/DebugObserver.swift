@@ -34,7 +34,7 @@ open class DebugTunnelObserver: Observer<TunnelEvent> {
         case .opened,
              .connectedToRemote,
              .updatingAdapterSocket:
-            DDLogVerbose("\(event)")
+            DDLogDebug("\(event)")
         case .closeCalled,
              .forceCloseCalled,
              .receivedReadySignal,
@@ -78,7 +78,7 @@ open class DebugAdapterSocketObserver: Observer<AdapterSocketEvent> {
             DDLogInfo("\(event)")
         case .socketOpened,
              .readyForForward:
-            DDLogVerbose("\(event)")
+            DDLogDebug("\(event)")
         case .disconnectCalled,
              .forceDisconnectCalled,
              .readData,
@@ -96,7 +96,7 @@ open class DebugProxyServerObserver: Observer<ProxyServerEvent> {
             DDLogInfo("\(event)")
         case .newSocketAccepted,
              .tunnelClosed:
-            DDLogVerbose("\(event)")
+            DDLogDebug("\(event)")
         }
     }
 }
@@ -105,7 +105,7 @@ open class DebugRuleManagerObserver: Observer<RuleMatchEvent> {
     open override func signal(_ event: RuleMatchEvent) {
         switch event {
         case .ruleDidNotMatch, .dnsRuleMatched:
-            DDLogVerbose("\(event)")
+            DDLogDebug("\(event)")
         case .ruleMatched:
             DDLogInfo("\(event)")
         }
