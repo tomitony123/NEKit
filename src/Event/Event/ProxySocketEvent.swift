@@ -13,8 +13,8 @@ public enum ProxySocketEvent: EventType {
             return "[ProxySocketEvent] Proxy socket \(socket) disconnected."
         case let .receivedRequest(session, on: socket):
             return "[ProxySocketEvent] Proxy socket \(socket) received request \(session)."
-        case let .readData(data, on: socket):
-            return "[ProxySocketEvent] Received \(data.count) bytes data on proxy socket \(socket)."
+        case let .readData(data, from: from):
+            return "[ProxySocketEvent] Received \(data.count) bytes data on proxy from \(from)."
         case let .wroteData(data, on: socket):
             if let data = data {
                 return "[ProxySocketEvent] Sent \(data.count) bytes data on proxy socket \(socket)."
@@ -35,7 +35,7 @@ public enum ProxySocketEvent: EventType {
     forceDisconnectCalled(ProxySocket),
     disconnected(ProxySocket),
     receivedRequest(ConnectSession, on: ProxySocket),
-    readData(Data, on: from),
+    readData(Data, from: RawTCPSocketProtocol),
     wroteData(Data?, on: ProxySocket),
     askedToResponseTo(AdapterSocket, on: ProxySocket),
     readyForForward(ProxySocket),

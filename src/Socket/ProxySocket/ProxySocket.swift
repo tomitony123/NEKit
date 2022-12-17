@@ -152,7 +152,7 @@ open class ProxySocket: NSObject, SocketProtocol, RawTCPSocketDelegate {
      */
     open func didRead(data: Data, from: RawTCPSocketProtocol) {
         
-        observer?.signal(.readData(data, on: from))
+        observer?.signal(.readData(data, from: from))
     }
 
     /**
