@@ -35,7 +35,7 @@ public enum ProxySocketEvent: EventType {
     forceDisconnectCalled(ProxySocket),
     disconnected(ProxySocket),
     receivedRequest(ConnectSession, on: ProxySocket),
-    readData(Data, on: ProxySocket),
+    readData(Data, on: from),
     wroteData(Data?, on: ProxySocket),
     askedToResponseTo(AdapterSocket, on: ProxySocket),
     readyForForward(ProxySocket),

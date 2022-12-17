@@ -151,7 +151,8 @@ open class ProxySocket: NSObject, SocketProtocol, RawTCPSocketDelegate {
      - parameter from:    The socket where the data is read from.
      */
     open func didRead(data: Data, from: RawTCPSocketProtocol) {
-        observer?.signal(.readData(data, on: self))
+        
+        observer?.signal(.readData(data, on: from))
     }
 
     /**
