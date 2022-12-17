@@ -4,41 +4,41 @@ public enum TunnelEvent: EventType {
     public var description: String {
         switch self {
         case .opened(let tunnel):
-            return "Tunnel \(tunnel) starts processing data."
+            return "[TunnelEvent]0 Tunnel \(tunnel) starts processing data."
         case .closeCalled(let tunnel):
-            return "Close is called on tunnel \(tunnel)."
+            return "[TunnelEvent] Close is called on tunnel \(tunnel)."
         case .forceCloseCalled(let tunnel):
-            return "Force close is called on tunnel \(tunnel)."
+            return "[TunnelEvent] Force close is called on tunnel \(tunnel)."
         case let .receivedRequest(request, from: socket, on: tunnel):
-            return "Tunnel1(proxy socket) \(tunnel) received request \(request) from proxy socket \(socket)."
+            return "[TunnelEvent] Tunnel(proxy socket) \(tunnel) received request \(request) from proxy socket \(socket)."
         case let .receivedReadySignal(socket, currentReady: signal, on: tunnel):
             if signal == 1 {
-                return "Tunnel2(signal from socket) \(tunnel) received ready-for-forward signal from socket \(socket)."
+                return "[TunnelEvent] Tunnel(signal from socket) \(tunnel) received ready-for-forward signal from socket \(socket)."
             } else {
-                return "Tunnel2(signal from socket) \(tunnel) received ready-for-forward signal from socket \(socket). Start forwarding data."
+                return "[TunnelEvent] Tunnel(signal from socket) \(tunnel) received ready-for-forward signal from socket \(socket). Start forwarding data."
             }
         case let .proxySocketReadData(data, from: socket, on: tunnel):
-            return "Tunnel3 \(tunnel) received \(data.count) bytes from proxy socket \(socket)."
+            return "[TunnelEvent] Tunnel \(tunnel) received \(data.count) bytes from proxy socket \(socket)."
         case let .proxySocketWroteData(data, by: socket, on: tunnel):
             if let data = data {
-                return "Proxy1 socket \(socket) sent \(data.count) bytes data from Tunnel \(tunnel)."
+                return "[TunnelEvent] Proxy socket \(socket) sent \(data.count) bytes data from Tunnel \(tunnel)."
             } else {
-                return "Proxy1 socket \(socket) sent data from Tunnel \(tunnel)."
+                return "[TunnelEvent] Proxy socket \(socket) sent data from Tunnel \(tunnel)."
             }
         case let .adapterSocketReadData(data, from: socket, on: tunnel):
-            return "Tunnel4(adapter) \(tunnel) received \(data.count) bytes from adapter socket \(socket)."
+            return "[TunnelEvent] Tunnel(adapter) \(tunnel) received \(data.count) bytes from adapter socket \(socket)."
         case let .adapterSocketWroteData(data, by: socket, on: tunnel):
             if let data = data {
-                return "Adatper2 socket \(socket) sent \(data.count) bytes data from Tunnel \(tunnel)."
+                return "[TunnelEvent] Adatper socket \(socket) sent \(data.count) bytes data from Tunnel \(tunnel)."
             } else {
-                return "Adapter2 socket \(socket) sent data from Tunnel \(tunnel)."
+                return "[TunnelEvent] Adapter socket \(socket) sent data from Tunnel \(tunnel)."
             }
         case let .connectedToRemote(socket, on: tunnel):
-            return "Adapter3 socket \(socket) connected to remote successfully on tunnel \(tunnel)."
+            return "[TunnelEvent] Adapter socket \(socket) connected to remote successfully on tunnel \(tunnel)."
         case let .updatingAdapterSocket(from: old, to: new, on: tunnel):
-            return "Updating adapter socket of tunnel \(tunnel) from \(old) to \(new)."
+            return "[TunnelEvent] Updating adapter socket of tunnel \(tunnel) from \(old) to \(new)."
         case .closed(let tunnel):
-            return "Tunnel4 \(tunnel) closed."
+            return "[TunnelEvent] Tunnel \(tunnel) closed."
         }
     }
 
