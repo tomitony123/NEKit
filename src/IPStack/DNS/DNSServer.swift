@@ -250,7 +250,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             return false
         }
         
-        NSLog("(debugz)(NEKit.DNS)-setUpFakeIP, domain:\(session.requestMessage.queries.first?.name), fakeIP:\(fakeIP)")
+//        NSLog("(debugz)(NEKit.DNS)-setUpFakeIP, domain:\(session.requestMessage.queries.first?.name), fakeIP:\(fakeIP)")
         
         session.fakeIP = fakeIP
         fakeSessions[fakeIP] = session

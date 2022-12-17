@@ -64,11 +64,12 @@ public class Router {
                     TCPMutablePacket(payload: $0.payload)
             }
             for packet in packets {
-                DDLogVerbose("Received packet of type: \(packet.proto) from \(packet.sourceAddress) to \(packet.destinationAddress)")
+                DDLogDebug("readAndProcessPackets, Received packet of type: \(packet.proto) from \(packet.sourceAddress) to \(packet.destinationAddress)")
                 if let packet = self.rewritePacket(packet) {
                     outputPackets.append(packet)
                 } else {
-                    DDLogVerbose("Failed to rewrite packet \(packet)")
+//                    DDLogDebug("Failed to rewrite packet \(packet)")
+                    DDLogDebug("readAndProcessPackets, Failed to rewrite packet, type: \(packet.proto) from \(packet.sourceAddress) to \(packet.destinationAddress)")
                 }
             }
 
