@@ -14,7 +14,7 @@ public enum ProxySocketEvent: EventType {
         case let .receivedRequest(session, on: socket):
             return "[ProxySocketEvent] Proxy socket \(socket) received request \(session)."
         case let .readData(data, from: from):
-            return "[ProxySocketEvent] Received \(data.count) bytes data on proxy from \(from)."
+            return "[ProxySocketEvent] Received \(data.count) bytes data on proxy sourceIP:\(from.sourceIPAddress), destIP:\(from.destinationIPAddress)."
         case let .wroteData(data, on: socket):
             if let data = data {
                 return "[ProxySocketEvent] Sent \(data.count) bytes data on proxy socket \(socket)."
