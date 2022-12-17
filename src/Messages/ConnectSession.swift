@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjackSwift
 
 /// Representing all the information in one connect session.
 public final class ConnectSession {
@@ -106,21 +107,26 @@ public final class ConnectSession {
     fileprivate func lookupRealIP() -> Bool {
         /// If custom DNS server is set up.
         guard let dnsServer = DNSServer.currentServer else {
+            DDLogDebug("[ConnectSession] lookupRealIP, dnsServer not exist")
             return true
         }
         
         // Only IPv4 is supported as of now.
         guard isIPv4() else {
+            DDLogDebug("[ConnectSession] lookupRealIP, not IPv4")
             return true
         }
         
         let address = IPAddress(fromString: requestedHost)!
+        DDLogDebug("[ConnectSession] lookupRealIP, address:\(address)")
         guard dnsServer.isFakeIP(address) else {
+            DDLogDebug("[ConnectSession] lookupRealIP, isFakeIP")
             return true
         }
         
         // Look up fake IP reversely should never fail.
         guard let session = dnsServer.lookupFakeIP(address) else {
+            DDLogDebug("[ConnectSession] lookupFakeIP failed")
             return false
         }
         
@@ -128,8 +134,11 @@ public final class ConnectSession {
         ipAddress = session.realIP?.presentation ?? ""
         matchedRule = session.matchedRule
         
+        DDLogDebug("[ConnectSession] host:\(host), ipAddress:\(ipAddress), matchedRule:\(matchedRule)")
+        
         if session.countryCode != nil {
             country = session.countryCode!
+            DDLogDebug("[ConnectSession] country:\(country)")
         }
         return true
     }
