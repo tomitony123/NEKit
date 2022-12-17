@@ -72,7 +72,7 @@ open class RuleManager {
                 session.matchedRule = rule
                 return adapterFactory
             } else {
-                observer?.signal(.ruleDidNotMatch(session, rule: rule))
+//                observer?.signal(.ruleDidNotMatch(session, rule: rule))
             }
         }
         return nil // this should never happens
