@@ -151,6 +151,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             return false
         }
 
+        NSLog("(debugz)(NEKit.DNS)-input, domain:\(session.requestMessage.queries.first?.name), to lookup")
         queue.async {
             self.lookup(session)
         }

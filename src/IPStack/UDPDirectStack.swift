@@ -147,7 +147,7 @@ public class UDPDirectStack: IPStackProtocol, NWUDPSocketDelegate {
         packet.transportProtocol = .udp
         packet.buildPacket()
 
-        DDLogDebug("(debugz)UDPDirectStack.didReceive, sourceIPAddress:\(packet.sourceAddress), destinationIPAddress:\(packet.destinationAddress)")
+        DDLogDebug("(debugz)UDPDirectStack.didReceive, sourceIPAddress:\(connectInfo.sourceAddress), destinationIPAddress:\(connectInfo.destinationAddress)")
         
         outputFunc([packet.packetData], [NSNumber(value: AF_INET as Int32)])
     }
