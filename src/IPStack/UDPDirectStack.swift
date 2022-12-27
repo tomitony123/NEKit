@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjackSwift
 
 struct ConnectInfo {
     let sourceAddress: IPAddress
