@@ -151,7 +151,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             return false
         }
 
-        NSLog("(debugz)(NEKit.DNS)-input, domain:\(session.requestMessage.queries.first?.name), to lookup")
+        NSLog("(debugz)(NEKit.DNS)-input, domain:\(session.requestMessage.queries.first?.name), source:\(ipPacket.sourceAddress), dest:\(ipPacket.destinationAddress), to lookup")
         queue.async {
             self.lookup(session)
         }
@@ -213,6 +213,9 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         ipPacket.protocolParser = udpParser
         ipPacket.transportProtocol = .udp
         ipPacket.buildPacket()
+
+        NSLog("(debugz)DNSServer response packet,(sourceAddress:\(ipPacket.sourceAddress), destinationAddress:\(ipPacket.destinationAddress)")
+    
 
         outputFunc([ipPacket.packetData], [NSNumber(value: AF_INET as Int32)])
     }
