@@ -59,7 +59,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
             let sourceIP = IPPacket.peekSourceAddress(packet)
             let destIP = IPPacket.peekDestinationAddress(packet)
             
-            DDLogDebug("(debugz)TCPStack.input, sourceIP:\(sourceIP), destIP:\(destIP)")
+            DDLogInfo("(debugz)TCPStack.input, sourceIP:\(sourceIP), destIP:\(destIP)")
             
             TSIPStack.stack.received(packet: packet)
             return true

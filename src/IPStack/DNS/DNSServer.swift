@@ -105,6 +105,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
     }
 
     fileprivate func lookupRemotely(_ session: DNSSession) {
+        NSLog("(debugz)(NEKit.DNS)-lookupRemotely, domain:\(session.requestMessage.queries.first?.name), to query remote")
         pendingSessions[session.requestMessage.transactionID] = session
         cleanUpPendingSession(session, after: Opt.DNSPendingSessionLifeTime)
         sendQueryToRemote(session)
