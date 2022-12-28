@@ -192,6 +192,9 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             response.transactionID = session.requestMessage.transactionID
             response.messageType = .response
             response.recursionAvailable = true
+            
+            response.queries = session.requestMessage.queries
+            
             // since we only support ipv4 as of now, it must be an answer of type A
             response.answers.append(DNSResource.ARecord(session.requestMessage.queries[0].name, TTL: UInt32(Opt.DNSFakeIPTTL), address: session.fakeIP!))
             session.expireAt = Date().addingTimeInterval(Double(Opt.DNSFakeIPTTL))
