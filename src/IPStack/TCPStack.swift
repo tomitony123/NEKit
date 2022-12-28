@@ -31,6 +31,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
      Inistailize a new TCP stack.
      */
     fileprivate init() {
+        DDLogInfo("(debugz)TCPStack.init")
     }
     
     /**
@@ -70,6 +71,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
     }
     
     public func start() {
+        DDLogInfo("(debugz)TCPStack.start")
         TSIPStack.stack.resumeTimer()
     }
     
@@ -79,6 +81,7 @@ open class TCPStack: TSIPStackDelegate, IPStackProtocol {
      After calling this, this stack should never be referenced. Use `TCPStack.stack` to get a new reference of the singleton.
      */
     open func stop() {
+        DDLogInfo("(debugz)TCPStack.stop")
         TSIPStack.stack.delegate = nil
         TSIPStack.stack.suspendTimer()
         proxyServer = nil
